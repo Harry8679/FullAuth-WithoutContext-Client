@@ -53,7 +53,7 @@ const App = () => {
           ) : (
             <>
               <Route path="/profile" element={<Profile user={user} logout={logout} />} />
-              <Route path="/update-profile" element={<EditProfile user={user} />} />
+              <Route path="/edit-profile" element={<EditProfile user={user} />} />
               <Route path="/change-password" element={<ChangePassword />} />
               <Route path="*" element={<Navigate to="/profile" />} />
             </>
