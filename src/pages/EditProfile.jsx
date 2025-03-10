@@ -9,6 +9,10 @@ const EditProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!token) {
+        toast.error("Vous devez être connecté !");
+        return;
+      }
       try {
         const response = await fetch("http://localhost:6540/api/v1/auth/profile", {
           headers: { Authorization: `Bearer ${token}` },
@@ -22,6 +26,7 @@ const EditProfile = () => {
     };
     fetchProfile();
   }, [token]);
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,6 +34,12 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!token) {
+      toast.error("Vous devez être connecté !");
+      return;
+    }
+  
     try {
       const response = await fetch("http://localhost:6540/api/v1/auth/profile", {
         method: "PUT",
@@ -43,6 +54,7 @@ const EditProfile = () => {
       toast.error(error.message);
     }
   };
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
