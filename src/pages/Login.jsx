@@ -18,23 +18,33 @@ const Login = ({ login }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
+  
       const data = await response.json();
+      console.log("🔍 Réponse API après login :", data);
+  
       if (!response.ok) throw new Error(data.error);
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user)); // Stocke l'utilisateur
-
-      console.log("✅ Token sauvegardé :", localStorage.getItem("token")); // Vérification
-      console.log("✅ Utilisateur stocké :", localStorage.getItem("user")); // Vérification
-
-      login(data.user); // ✅ Met à jour `user` dans App.js
+  
+      // Vérifie où se trouve le token dans la réponse API
+      const token = data.token || data.accessToken;
+      if (!token) {
+        console.error("❌ ERREUR : Aucun token trouvé dans la réponse !");
+        return;
+      }
+  
+      // Stocker le token et l'utilisateur
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      console.log("✅ Token sauvegardé :", localStorage.getItem("token"));
+      console.log("✅ Utilisateur stocké :", localStorage.getItem("user"));
+  
       toast.success("Connexion réussie !");
-      navigate("/profile"); // ✅ Redirige immédiatement
+      window.location.reload(); // ✅ Rafraîchir la page pour mettre à jour l'état
     } catch (error) {
       toast.error(error.message);
     }
   };
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">

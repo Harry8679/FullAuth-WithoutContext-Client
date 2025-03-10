@@ -42,7 +42,10 @@ const App = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setUser(null);
-  };
+    
+    // ✅ Redirection immédiate après déconnexion
+    window.location.href = "/login";
+  };  
 
   return (
     <Router>

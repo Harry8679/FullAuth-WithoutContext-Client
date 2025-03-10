@@ -24,8 +24,10 @@ const Navbar = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/login"); // ✅ Redirection propre après déconnexion
-  };
+    
+    // ✅ Redirection immédiate après déconnexion
+    window.location.href = "/login";
+  };  
 
   return (
     <nav className="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 shadow-lg">
