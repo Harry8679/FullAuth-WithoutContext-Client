@@ -25,6 +25,9 @@ const Login = ({ login }) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user)); // Stocke l'utilisateur
 
+      console.log("✅ Token sauvegardé :", localStorage.getItem("token")); // Vérification
+      console.log("✅ Utilisateur stocké :", localStorage.getItem("user")); // Vérification
+
       login(data.user); // ✅ Met à jour `user` dans App.js
       toast.success("Connexion réussie !");
       navigate("/profile"); // ✅ Redirige immédiatement
@@ -38,9 +41,30 @@ const Login = ({ login }) => {
       <div className="bg-white p-8 shadow-lg rounded-xl w-96">
         <h2 className="text-2xl font-bold text-center">Connexion</h2>
         <form onSubmit={handleSubmit} className="mt-4">
-          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-2 border rounded mt-2" required />
-          <input type="password" name="password" placeholder="Mot de passe" value={formData.password} onChange={handleChange} className="w-full p-2 border rounded mt-2" required />
-          <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600">Se connecter</button>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded mt-2"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Mot de passe"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full p-2 border rounded mt-2"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600"
+          >
+            Se connecter
+          </button>
         </form>
       </div>
     </div>
