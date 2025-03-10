@@ -1,10 +1,30 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 
-const Navbar = ({ user, logout }) => {
+const Navbar = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+
+    console.log("🔍 Vérification dans Navbar - Token :", storedToken);
+    console.log("🔍 Vérification dans Navbar - User :", storedUser);
+
+    if (storedUser && storedToken) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
+    }
+  }, []);
+
   const handleLogout = () => {
-    logout();
-    window.location.href = "/login"; // ✅ Force un rafraîchissement pour bien mettre à jour la navbar
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login"); // ✅ Redirection propre après déconnexion
   };
 
   return (
