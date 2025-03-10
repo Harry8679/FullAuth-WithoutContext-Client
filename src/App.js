@@ -41,13 +41,13 @@ const App = () => {
       <div className="container mx-auto p-4">
         <Routes>
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           {!user ? (
             <>
               <Route path="/register" element={<Register login={login} />} />
               <Route path="/login" element={<Login login={login} />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
               <Route path="*" element={<Navigate to="/login" />} />
             </>
           ) : (
