@@ -1,42 +1,23 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import { toast } from "react-toastify";
 
 const EditProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ name: "", email: "" });
   const [loading, setLoading] = useState(false);
-  
-  // ✅ Vérifier si le token est disponible
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token) {
-      toast.error("Vous devez être connecté !");
-      navigate("/login");
-      return;
-    }
-
-    const fetchProfile = async () => {
-      try {
-        const response = await axios.get("http://localhost:6540/api/v1/auth/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUser(response.data);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          toast.error("Session expirée, veuillez vous reconnecter !");
-          localStorage.removeItem("token");
-          navigate("/login");
-        } else {
-          toast.error("Erreur de chargement du profil.");
-        }
-      }
-    };
-
-    fetchProfile();
-  }, [navigate, token]);
+    axiosInstance
+      .get("/profile")
+      .then((res) => setUser(res.data))
+      .catch(() => {
+        toast.error("Session expirée, veuillez vous reconnecter !");
+        localStorage.removeItem("token");
+        navigate("/login");
+      });
+  }, [navigate]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -46,16 +27,8 @@ const EditProfile = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (!token) {
-      toast.error("Vous devez être connecté !");
-      setLoading(false);
-      return;
-    }
-
     try {
-      await axios.put("http://localhost:6540/api/v1/auth/profile", user, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosInstance.put("/profile", user);
       toast.success("Profil mis à jour avec succès !");
       navigate("/profile");
     } catch (error) {
