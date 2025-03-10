@@ -17,12 +17,22 @@ const App = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const storedToken = localStorage.getItem("token");
+
+    console.log("🔍 Vérification App.js - Token :", storedToken);
+    console.log("🔍 Vérification App.js - User :", storedUser);
+
+    if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
     }
   }, []);
 
   const login = (userData) => {
+    if (!userData.token) {
+      console.error("❌ ERREUR : Token manquant !");
+      return;
+    }
+
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", userData.token);
     setUser(userData);
@@ -36,7 +46,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar user={user} logout={logout} />
+      <Navbar />
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <div className="container mx-auto p-4">
         <Routes>
