@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const Login = ({ login }) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
@@ -23,8 +23,11 @@ const Login = () => {
       if (!response.ok) throw new Error(data.error);
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user)); // Stocke l'utilisateur
+
+      login(data.user); // ✅ Met à jour `user` dans App.js
       toast.success("Connexion réussie !");
-      navigate("/profile");
+      navigate("/profile"); // ✅ Redirige immédiatement
     } catch (error) {
       toast.error(error.message);
     }
