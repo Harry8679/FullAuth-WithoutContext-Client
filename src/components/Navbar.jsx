@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 
-const Navbar = () => {
-  const user = localStorage.getItem("token");
-
+const Navbar = ({ user, logout }) => {
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+    logout();
+    window.location.href = "/login"; // ✅ Force un rafraîchissement pour bien mettre à jour la navbar
   };
 
   return (
